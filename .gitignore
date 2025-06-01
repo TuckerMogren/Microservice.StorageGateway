@@ -87,3 +87,4 @@ Pulumi.local.yaml
 # CLI history and logs
 .pulumi-history
 *.log
+.DS_Store
