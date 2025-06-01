@@ -52,3 +52,38 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+
+# IDE settings
+.vscode/
+.idea/
+
+# User-specific VS files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Docker
+Dockerfile.*
+docker-compose*.yml
+*.dockerignore
+
+secrets.json
+.env
+appsettings.*.local.json
+
+# Pulumi state & metadata files
+Pulumi.*.yaml
+Pulumi.*.bak
+Pulumi.*.json
+stack.json
+pulumi.stack.yaml
+.pulumi/
+*.passphrase
+# Optional: ignore local config with secrets
+Pulumi.dev.yaml
+Pulumi.local.yaml
+# CLI history and logs
+.pulumi-history
+*.log
