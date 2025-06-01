@@ -21,4 +21,13 @@
   <NoWarn>$(NoWarn);1591</NoWarn>
 </PropertyGroup>
 
+<ItemGroup>
+  <None Update="appsettings.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+  <None Update="Docker/Vault/vault-config.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+</ItemGroup>
+
 </Project>

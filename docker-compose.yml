@@ -1,11 +1,17 @@
+
 services:
+
   vault:
     image: vault:1.13.3
+    command: vault server -config=/Vault/vault-config.json
     ports:
-      - "8200:8200"
+      - "8300:8300"
     environment:
-      VAULT_DEV_ROOT_TOKEN_ID: dev-token
-      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+      VAULT_API_ADDR: http://localhost:8300
+      VAULT_ADDR: http://localhost:8300
+    volumes:
+      - vault-data:/vault/file
+      - ./vault-config.json:/Vault/vault-config.json
     cap_add:
       - IPC_LOCK
 
@@ -21,7 +27,7 @@ services:
   webapi:
     build:
       context: .
-      dockerfile: src/WebApi/Dockerfile.WebApi
+      dockerfile: src/WebApi/Docker/Dockerfile.WebApi
     ports:
       - "8080:80"     # HTTP
       - "8443:443"    # HTTPS
@@ -35,3 +41,6 @@ services:
     depends_on:
       - rabbitmq
       - vault
+
+volumes:
+  vault-data:
