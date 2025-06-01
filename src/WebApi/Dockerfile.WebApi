@@ -1,0 +1,34 @@
+# Use official .NET 9 SDK to build the app
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+
+# Copy solution and project files
+COPY Microservice.StorageGateway.sln ./
+COPY src/Application/Microservice.StorageGateway.Application.csproj ./Application/
+COPY src/Domain/Microservice.StorageGateway.Domain.csproj ./Domain/
+COPY src/Infrastructure/Microservice.StorageGateway.Infrastructure.csproj ./Infrastructure/
+COPY src/Contracts/Microservice.StorageGateway.Contracts.csproj ./Contracts/
+COPY src/WebApi/Microservice.StorageGateway.WebApi.csproj ./WebApi/
+
+# Restore dependencies
+RUN dotnet restore ./WebApi/Microservice.StorageGateway.WebApi.csproj
+
+# Copy the full source
+COPY src/Application ./Application/
+COPY src/Domain ./Domain/
+COPY src/Infrastructure ./Infrastructure/
+COPY src/Contracts ./Contracts/
+COPY src/WebApi ./WebApi/
+
+# Build and publish the app
+WORKDIR /src/WebApi
+RUN dotnet publish -c Release -o /app/publish
+
+# Runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+WORKDIR /app
+COPY --from=build /app/publish .
+
+EXPOSE 80
+EXPOSE 443
+ENTRYPOINT ["dotnet", "Microservice.StorageGateway.WebApi.dll"]
