@@ -34,7 +34,7 @@ public static class ConfigureSwagger
         });
     }
     
-        public static void UseSwaggerWithUI(this IApplicationBuilder app)
+    public static void UseSwaggerWithUI(this IApplicationBuilder app)
     {
         app.UseSwagger();
         app.UseSwaggerUI(c =>

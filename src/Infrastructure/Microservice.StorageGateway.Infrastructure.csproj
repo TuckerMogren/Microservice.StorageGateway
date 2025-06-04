@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="../Contracts/Microservice.StorageGateway.Contracts.csproj" />
     <ProjectReference Include="..\Application\Microservice.StorageGateway.Application.csproj" />
     <ProjectReference Include="..\Domain\Microservice.StorageGateway.Domain.csproj" />
   </ItemGroup>

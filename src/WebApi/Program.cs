@@ -1,13 +1,22 @@
 
 using Microservice.StorageGateway.WebApi.Configuration;
+using Microservice.StorageGateway.WebApi.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    //.ConfigureVault()
+    .Build();
+
 builder.Services.AddOpenApi();
 builder.Services.AddSwagger();
 
+builder.Configuration.BindApplicationSettings(builder.Services);
+builder.ConfigureSerilogLogging();
 
 var app = builder.Build();
 
@@ -20,12 +29,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
-app.MapGet("/test", () =>
-{
-    return "Hello World!";
-})
-.WithName("Test");
+app.MapEndpoints();
 
 app.Run();
 
