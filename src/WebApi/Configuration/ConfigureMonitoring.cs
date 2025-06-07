@@ -1,5 +1,4 @@
 using Serilog;
-using Serilog.Events;
 
 namespace Microservice.StorageGateway.WebApi.Configuration;
 
@@ -15,15 +14,9 @@ public static class SerilogLoggingExtensions
             .Enrich.FromLogContext()
             .Enrich.WithProperty("Environment", environment.EnvironmentName)
             .Enrich.WithCorrelationId()
-            .WriteTo.Console()
-            .WriteTo.File("Logs/app.log", rollingInterval: RollingInterval.Day)
-            .WriteTo.ApplicationInsights(
-                configuration["ApplicationInsights:ConnectionString"] 
-                    ?? configuration["ApplicationInsights:InstrumentationKey"],
-                TelemetryConverter.Traces,
-                restrictedToMinimumLevel: LogEventLevel.Information)
             .CreateLogger();
 
         builder.Host.UseSerilog();
+    
     }
 }
