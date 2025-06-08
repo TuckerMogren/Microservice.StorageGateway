@@ -13,10 +13,9 @@ public static class SerilogLoggingExtensions
             .ReadFrom.Configuration(configuration)
             .Enrich.FromLogContext()
             .Enrich.WithProperty("Environment", environment.EnvironmentName)
-            .Enrich.WithCorrelationId()
             .CreateLogger();
 
         builder.Host.UseSerilog();
-    
+
     }
 }

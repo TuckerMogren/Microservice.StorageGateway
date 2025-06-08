@@ -1,8 +1,5 @@
-
 using Microservice.StorageGateway.WebApi.Configuration;
 using Microservice.StorageGateway.WebApi.Endpoints;
-using CorrelationId;
-using CorrelationId.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,18 +11,14 @@ builder.Configuration
     //.ConfigureVault()
     .AddEnvironmentVariables();
 
-builder.Services.AddDefaultCorrelationId(options =>
-{
-    options.RequestHeader = "x-correlation-id";
-    options.IncludeInResponse = true;
-});
+
 builder.Services.AddOpenApi();
 builder.Services.AddSwagger();
 
 builder.Configuration.BindApplicationSettings(builder.Services);
 builder.ConfigureSerilogLogging();
 var app = builder.Build();
-app.UseCorrelationId();
+app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseRouting();
 
 if(!app.Environment.IsProduction()) 
@@ -35,7 +28,6 @@ if(!app.Environment.IsProduction())
 }
 
 app.UseHttpsRedirection();
-app.UseMiddleware<Microservice.StorageGateway.WebApi.Configuration.CorrelationIdMiddleware>();
 app.MapEndpoints();
 
 app.Run();
