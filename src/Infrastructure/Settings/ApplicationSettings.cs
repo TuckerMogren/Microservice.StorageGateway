@@ -4,5 +4,7 @@ namespace Microservice.StorageGateway.Infrastructure.Settings;
 
 public class ApplicationSettings : IApplicationSettings
 {
-    public IStorageGatewayVaultSettings storageGatewayVaultSettings { get; set; } = new StorageGatewayVaultSettings();
+    public IStorageGatewayVaultSettings StorageGatewayVaultSettings { get; set; } = new StorageGatewayVaultSettings();
+
+    public IServiceBusSettings ServiceBusSettings { get; set; } = new ServiceBusSettings();
 }

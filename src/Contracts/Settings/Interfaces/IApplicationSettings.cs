@@ -4,5 +4,6 @@ namespace Microservice.StorageGateway.Contracts.Settings.Interfaces;
 
 public interface IApplicationSettings
 {
-    IStorageGatewayVaultSettings storageGatewayVaultSettings{ get; }
+    IStorageGatewayVaultSettings StorageGatewayVaultSettings { get; }
+    IServiceBusSettings ServiceBusSettings{ get; }
 }

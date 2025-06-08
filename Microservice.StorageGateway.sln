@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservice.StorageGateway
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservice.StorageGateway.Contracts", "src\Contracts\Microservice.StorageGateway.Contracts.csproj", "{46C8D0D6-B31E-403C-B139-B45758A35F00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservice.StorageGateway.Persistence", "src\Persistence\Microservice.StorageGateway.Persistence.csproj", "{2DF97EA4-DFE9-43D2-959F-E13D0A36AF23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{46C8D0D6-B31E-403C-B139-B45758A35F00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46C8D0D6-B31E-403C-B139-B45758A35F00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46C8D0D6-B31E-403C-B139-B45758A35F00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DF97EA4-DFE9-43D2-959F-E13D0A36AF23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DF97EA4-DFE9-43D2-959F-E13D0A36AF23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DF97EA4-DFE9-43D2-959F-E13D0A36AF23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DF97EA4-DFE9-43D2-959F-E13D0A36AF23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

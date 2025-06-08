@@ -11,11 +11,13 @@ builder.Configuration
     //.ConfigureVault()
     .AddEnvironmentVariables();
 
+var appsettings = builder.Configuration.BindApplicationSettings(builder.Services);
+builder.Services.ConfigureMassTransitMessaging(appsettings.ServiceBusSettings);
 
+builder.Services.RegisterDependencyInjection();
 builder.Services.AddOpenApi();
 builder.Services.AddSwagger();
 
-builder.Configuration.BindApplicationSettings(builder.Services);
 builder.ConfigureSerilogLogging();
 var app = builder.Build();
 app.UseMiddleware<CorrelationIdMiddleware>();
