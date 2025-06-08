@@ -12,9 +12,10 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 var appsettings = builder.Configuration.BindApplicationSettings(builder.Services);
+builder.Services.RegisterMassTransitDispatchers();
 builder.Services.ConfigureMassTransitMessaging(appsettings.ServiceBusSettings);
-
-builder.Services.RegisterDependencyInjection();
+builder.Services.RegisterGoogleDrive(appsettings.GoogleDriveSettings);
+builder.Services.RegisterRepositories();
 builder.Services.AddOpenApi();
 builder.Services.AddSwagger();
 

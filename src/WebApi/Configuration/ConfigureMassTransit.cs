@@ -28,8 +28,8 @@ public static class ConfigureMassTransit
                     {
                         cfg.Host(settings.ConnectionString, "/", h =>
                         {
-                            h.Username(settings.Username!);
-                            h.Password(settings.Password!);
+                            h.Username(settings.Username);
+                            h.Password(settings.Password);
                         });
 
                         cfg.ConfigureEndpoints(context);
