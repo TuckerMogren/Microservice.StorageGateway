@@ -4,7 +4,7 @@ namespace Microservice.StorageGateway.Infrastructure.Settings;
 
 public class GoogleDriveSettings : IGoogleDriveSettings
 {
-    public string CredentialFilePath { get; init; } = string.Empty;
+    public string CredentialFile { get; init; } = string.Empty;
 
     public IEnumerable<string> Scopes { get; init; } = [];
 }
