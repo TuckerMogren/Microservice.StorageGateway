@@ -21,13 +21,14 @@ public static class StorageOperationsEndpoints
             [FromQuery] string? folderId) =>
         {
             var logger = loggerFactory.CreateLogger(nameof(StorageOperationsEndpoints));
-            logger.LogInformation("CreateFileAsync endpoint hit");
+            logger.LogInformation($"{nameof(MapCreateFileEndpoint)} endpoint hit");
 
             try
             {
                 if (file == null || file.Length == 0)
                     return Results.BadRequest("A file must be provided.");
 
+                logger.LogInformation("File is Ok: FileName: {Name}, FileLength: {Length}", file.FileName ,file.Length);
                 var fileId = await handler.HandleAsync(new CreateFileCommandModel
                 {
                     FileStream = file.OpenReadStream(),
@@ -36,11 +37,12 @@ public static class StorageOperationsEndpoints
                     ParentFolderId = folderId
                 });
 
+                logger.LogInformation("{FileId} was created!", fileId);
                 return Results.Ok(fileId);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to create file.");
+                logger.LogError(ex, "Failed to add file.");
                 return Results.Problem(
                     detail: "An unexpected error occurred while creating the file.",
                     statusCode: StatusCodes.Status500InternalServerError);
