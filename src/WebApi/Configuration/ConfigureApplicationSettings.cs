@@ -11,6 +11,9 @@ public static class ConfigureApplicationSettings
         var settings = new ApplicationSettings();
         config.Bind(settings);
         services.AddSingleton<IApplicationSettings>(settings);
+
+
+        
         return settings;
     }
 }

@@ -1,17 +1,17 @@
 using Google.Apis.Auth.OAuth2;
-using Microsoft.Extensions.Options;
-using Google.Apis.Drive.v3;
 using Microservice.StorageGateway.Contracts.Settings.Interfaces;
+using Newtonsoft.Json;
 
+namespace Microservice.StorageGateway.WebApi.Configuration;
 public static class ConfigureGoogleDrive
 {
     public static IServiceCollection RegisterGoogleDrive(this IServiceCollection services, IGoogleDriveSettings settings)
     {
 
-        services.AddScoped<GoogleCredential>(provider =>
+        services.AddScoped(provider =>
         {
             return GoogleCredential
-                .FromFile(settings.CredentialFilePath)
+                .FromJson(JsonConvert.SerializeObject(settings.CredentialFile, Formatting.Indented))
                 .CreateScoped(settings.Scopes);
         });
 
