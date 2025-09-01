@@ -1,4 +1,5 @@
 using Microservice.StorageGateway.Application.Commands.CreateFile;
+using Microservice.StorageGateway.Application.Commands.DeleteFile;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Microservice.StorageGateway.WebApi.Endpoints.StorageOperations;
@@ -7,35 +8,35 @@ public static class StorageOperationsEndpoints
 {
     public static IEndpointRouteBuilder MapFileCrudOperations(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapCreateFileEndpoint();
+        endpoints.MapAddFileToDriveEndpoint();
+        endpoints.MapDeleteFileFromDriveEndpoint();
         return endpoints;
     }
 
-    private static IEndpointRouteBuilder MapCreateFileEndpoint(this IEndpointRouteBuilder endpoints)
+    private static IEndpointRouteBuilder MapAddFileToDriveEndpoint(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapPost("/CreateFileAsync", async (
-            HttpContext context,
             [FromServices] ILoggerFactory loggerFactory,
             [FromServices] ICreateFileCommandHandler handler,
             IFormFile file,
             [FromQuery] string? folderId) =>
         {
             var logger = loggerFactory.CreateLogger(nameof(StorageOperationsEndpoints));
-            logger.LogInformation($"{nameof(MapCreateFileEndpoint)} endpoint hit");
+            logger.LogInformation($"{nameof(MapAddFileToDriveEndpoint)} endpoint hit");
 
             try
             {
                 if (file == null || file.Length == 0)
                     return Results.BadRequest("A file must be provided.");
 
-                logger.LogInformation("File is Ok: FileName: {Name}, FileLength: {Length}", file.FileName ,file.Length);
+                logger.LogInformation("File is Ok: FileName: {Name}, FileLength: {Length}", file.FileName, file.Length);
                 var fileId = await handler.HandleAsync(new CreateFileCommandModel
                 {
                     FileStream = file.OpenReadStream(),
                     FileName = file.FileName,
                     MimeType = file.ContentType,
                     ParentFolderId = folderId
-                });
+               });
 
                 logger.LogInformation("{FileId} was created!", fileId);
                 return Results.Ok(fileId);
@@ -54,6 +55,49 @@ public static class StorageOperationsEndpoints
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .ProducesProblem(StatusCodes.Status500InternalServerError)
         .WithName("CreateFile");
+
+        return endpoints;
+    }
+
+    private static IEndpointRouteBuilder MapDeleteFileFromDriveEndpoint(this IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapDelete("/files/{fileId}", async (
+            [FromRoute] string fileId,
+            [FromServices] ILoggerFactory loggerFactory,
+            [FromServices] IDeleteFileCommandHanlder useCase,
+            CancellationToken cancellationToken
+        ) =>
+        {
+            var logger = loggerFactory.CreateLogger("DeleteFile");
+
+            logger.LogInformation("Attempting to delete file with ID: {FileId}", fileId);
+
+            try
+            {
+                var result = await useCase.HandleAsync(new () { FileId = fileId }, cancellationToken);
+
+                if (result)
+                {
+                    logger.LogInformation("Successfully deleted file with ID: {FileId}", fileId);
+                    return Results.Ok(true);
+                }
+                else
+                {
+                    logger.LogWarning("Failed to delete file with ID: {FileId}", fileId);
+                    return Results.BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Unexpected error occurred while deleting file with ID: {FileId}", fileId);
+                return Results.Problem("An unexpected error occurred.");
+            }
+        })
+        .DisableAntiforgery()
+        .Produces<bool>(StatusCodes.Status200OK)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .ProducesProblem(StatusCodes.Status500InternalServerError)
+        .WithName("DeleteFile");
 
         return endpoints;
     }

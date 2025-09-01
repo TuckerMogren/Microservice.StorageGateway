@@ -1,11 +1,10 @@
-
 using Microsoft.Extensions.Logging;
 
 namespace Microservice.StorageGateway.Application.Commands.CreateFile;
 
-public class CreateFileCommandHandler(IFileCommandDispatcher dispatcher, ILogger<CreateFileCommandHandler> logger) : ICreateFileCommandHandler
+public class CreateFileCommandHandler(ICreateFileCommandDispatcher dispatcher, ILogger<CreateFileCommandHandler> logger) : ICreateFileCommandHandler
 {
-    private readonly IFileCommandDispatcher _dispatcher = dispatcher;
+    private readonly ICreateFileCommandDispatcher _dispatcher = dispatcher;
     private readonly ILogger<CreateFileCommandHandler> _logger = logger;
 
     public Task<string> HandleAsync(CreateFileCommandModel command, CancellationToken cancellationToken = default)

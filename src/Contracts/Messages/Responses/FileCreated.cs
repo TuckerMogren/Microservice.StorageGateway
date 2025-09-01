@@ -3,6 +3,7 @@ namespace Microservice.StorageGateway.Contracts.Messages.Responses;
 
 public interface FileCreated
 {
-    Guid CorrelationId { get; }
+    Ulid CorrelationId { get; }
     string FileId { get; }
+    string FolderId { get; }
 }
